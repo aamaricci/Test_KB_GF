@@ -1,6 +1,7 @@
 program test
-  USE NEQ_LIB
   USE SCIFOR  
+  USE KB_LIB
+
   implicit none
   integer                                           :: i,j,ik,itime,Lk,Nx,Nso
   logical                                           :: converged
@@ -26,7 +27,7 @@ program test
   call parse_input_variable(ts,"ts",finput,default=1d0,comment="hopping")
   call parse_input_variable(Nx,"Nx",finput,default=21,comment="Number of k-points")
   !
-  call neq_read_input(trim(finput))
+  call kb_read_input(trim(finput))
 
 
   !BUILD TIME GRIDS AND NEQ-PARAMETERS:

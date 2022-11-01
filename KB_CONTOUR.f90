@@ -1,5 +1,5 @@
-MODULE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
+MODULE KB_CONTOUR
+  USE KB_VARS_GLOBAL
   USE SF_CONSTANTS, only: one,xi,zero,pi
   USE SF_ARRAYS, only: linspace,arange
   USE SF_IOTOOLS, only: reg,free_unit
@@ -244,7 +244,7 @@ contains
   end subroutine kb_contour_params_equality
 
 
-END MODULE NEQ_CONTOUR
+END MODULE KB_CONTOUR
 
 
 ! #ifdef _test

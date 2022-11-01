@@ -1,10 +1,9 @@
-MODULE NEQ_GF_CONVOLUTE
-  USE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
-  USE NEQ_GF_COMMON
-  USE NEQ_GF_BASIS
-  USE SF_CONSTANTS, only: one,xi,zero,pi
-  USE SF_LINALG,    only: zeye,inv
+MODULE KB_GF_CONVOLUTE
+  USE KB_VARS_GLOBAL
+  USE KB_CONTOUR
+  USE KB_GF_AUX
+  USE KB_GF_COMMON
+  USE SCIFOR, only: one,xi,zero,pi,zeye,inv
   implicit none
   private
 
@@ -992,7 +991,7 @@ contains
 
 
 
-END MODULE NEQ_GF_CONVOLUTE
+END MODULE KB_GF_CONVOLUTE
 
 
 

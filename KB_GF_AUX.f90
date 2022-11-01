@@ -1,9 +1,7 @@
-MODULE NEQ_GF_COMMON
-  USE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
-  USE SF_CONSTANTS, only: one,xi,zero,pi
-  USE SF_LINALG,    only: zeye,inv
-  USE SF_FFT_FFTPACK, only: fft,ifft
+MODULE KB_GF_AUX
+  USE KB_VARS_GLOBAL
+  USE KB_CONTOUR
+  USE SCIFOR, only: one,xi,zero,pi,fft,ifft
   implicit none
   private
 
@@ -30,13 +28,6 @@ MODULE NEQ_GF_COMMON
   public :: reshape_nn2nso
 
 
-
-  integer,public :: N1,N2,N3,N4,N5,N6,N7,Nk
-  integer,public :: i1,i2,i3,i4,i5,i6,i7,ik
-  integer,public :: Nlat,Nso,Nlso
-  integer,public :: ilat,ispin,iorb,io
-  integer,public :: jlat,jspin,jorb,jo
-  integer,public :: klat,kspin,korb,ko
 
 contains
 
@@ -898,7 +889,7 @@ contains
 
 
 
-END MODULE NEQ_GF_COMMON
+END MODULE KB_GF_AUX
 
 
 

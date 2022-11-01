@@ -14,6 +14,9 @@ EXE=testOP_DERIVED3
 INCARGS=$(shell pkg-config --cflags dmft_tools scifor)
 LIBARGS=$(shell pkg-config --libs   dmft_tools scifor)
 
+SFINC=$(shell pkg-config --cflags scifor)
+SFLIB=$(shell pkg-config --libs   scifor)
+
 
 ifeq ($(PLAT),intel)
 FFLAG=-O2 -ftz
@@ -35,11 +38,17 @@ endif
 
 .SUFFIXES: .f90
 
-OBJS =  NEQ_INPUT_VARS.o ELECTRIC_FIELD.o NEQ_CONTOUR.o NEQ_GF_COMMON.o \
-	NEQ_GF_BASIS.o NEQ_GF_IMPLICIT_SUM.o NEQ_GF_CONVOLUTE.o NEQ_GF_VIE.o NEQ_GF_DYSON.o NEQ_LIB.o
-
-
-
+OBJS =  KB_VARS_GLOBAL.o \
+	KB_CONTOUR.o \
+	KB_GF_AUX.o \
+	KB_GF_COMMON.o \
+	KB_GF_SUM.o \
+	KB_GF_CONVOLUTE.o \
+	KB_GF_VIE.o \
+	KB_GF_DYSON.o \
+	KB_GF_FREE.o \
+	KB_GF_MAIN.o \
+	KB_LIB.o
 
 
 all: all version compile
@@ -61,7 +70,7 @@ compile: version $(OBJS)
 
 
 .f90.o:	
-	$(FC) $(FFLAG) $(INCARGS) -c $<
+	$(FC) $(FFLAG) $(SFINC) -c $<
 
 
 completion:

@@ -1,11 +1,9 @@
-MODULE NEQ_GF_BASIS
-  USE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
-  USE NEQ_GF_COMMON
-  USE SF_CONSTANTS, only: one,xi,zero,pi
-  USE SF_IOTOOLS
-  USE SF_LINALG,    only: zeye,inv
-  USE SF_MISC, only: assert_shape
+MODULE KB_GF_COMMON
+  USE KB_CONTOUR
+  USE KB_VARS_GLOBAL
+  USE KB_GF_AUX
+  USE SCIFOR, only: one,xi,zero,pi,zeye,inv,assert_shape
+  ! USE SF_IOTOOLS
   implicit none
   private
 
@@ -145,6 +143,14 @@ MODULE NEQ_GF_BASIS
   public :: assert_shape_kb_gf
   public :: reshape_kb_gf
 
+
+
+  integer,public :: N1,N2,N3,N4,N5,N6,N7,Nk
+  integer,public :: i1,i2,i3,i4,i5,i6,i7,ik
+  integer,public :: Nlat,Nso,Nlso
+  integer,public :: ilat,ispin,iorb,io
+  integer,public :: jlat,jspin,jorb,jo
+  integer,public :: klat,kspin,korb,ko
 
 
 
@@ -708,8 +714,8 @@ contains
 
 
   function kb_gf_reshape_nn2nso(A,Nspin,Norb) result(B)
-    type(kb_gf),dimension(Nspin,Nspin,Norb,Norb),intent(in) :: A
     integer,intent(in)                                      :: Nspin,Norb
+    type(kb_gf),dimension(Nspin,Nspin,Norb,Norb),intent(in) :: A
     type(kb_gf),dimension(Nspin*Norb,Nspin*Norb)            :: B
     integer                                                 :: ispin,iorb,jspin,jorb
     call B%init()
@@ -721,8 +727,8 @@ contains
   end function kb_gf_reshape_nn2nso
 
   function kb_gf_reshape_nso2nn(A,Nspin,Norb) result(B)
-    type(kb_gf),dimension(Nspin*Norb,Nspin*Norb),intent(in) :: A
     integer,intent(in)                                      :: Nspin,Norb
+    type(kb_gf),dimension(Nspin*Norb,Nspin*Norb),intent(in) :: A
     type(kb_gf),dimension(Nspin,Nspin,Norb,Norb)            :: B
     integer                                                 :: ispin,iorb,jspin,jorb
     call B%init()
@@ -769,10 +775,10 @@ contains
 
 
   function kb_dgf_reshape_nn2nso(A,Nspin,Norb) result(B)
+    integer,intent(in)                                       :: Nspin,Norb
     type(kb_dgf),dimension(Nspin,Nspin,Norb,Norb),intent(in) :: A
-    integer,intent(in)                                      :: Nspin,Norb
     type(kb_dgf),dimension(Nspin*Norb,Nspin*Norb)            :: B
-    integer                                                 :: ispin,iorb,jspin,jorb
+    integer                                                  :: ispin,iorb,jspin,jorb
     call B%init()
     do concurrent (ispin=1:Nspin,jspin=1:Norb,iorb=1:Norb,jorb=1:Norb)
        io = iorb + (ispin-1)*Norb
@@ -782,10 +788,10 @@ contains
   end function kb_dgf_reshape_nn2nso
 
   function kb_dgf_reshape_nso2nn(A,Nspin,Norb) result(B)
+    integer,intent(in)                                       :: Nspin,Norb
     type(kb_dgf),dimension(Nspin*Norb,Nspin*Norb),intent(in) :: A
-    integer,intent(in)                                      :: Nspin,Norb
     type(kb_dgf),dimension(Nspin,Nspin,Norb,Norb)            :: B
-    integer                                                 :: ispin,iorb,jspin,jorb
+    integer                                                  :: ispin,iorb,jspin,jorb
     call B%init()
     do concurrent (ispin=1:Nspin,jspin=1:Norb,iorb=1:Norb,jorb=1:Norb)
        io = iorb + (ispin-1)*Norb
@@ -983,7 +989,7 @@ contains
     end if
   end subroutine kb_dgf_assert_shape_d7
 
-END MODULE NEQ_GF_BASIS
+END MODULE KB_GF_COMMON
 
 
 

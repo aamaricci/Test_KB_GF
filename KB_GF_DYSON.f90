@@ -1,8 +1,8 @@
-MODULE NEQ_GF_DYSON
-  USE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
-  USE NEQ_GF_COMMON
-  USE NEQ_GF_BASIS
+MODULE KB_GF_DYSON
+  USE KB_VARS_GLOBAL
+  USE KB_CONTOUR
+  USE KB_GF_AUX
+  USE KB_GF_COMMON
   USE SCIFOR, only: one,xi,zero,pi,zeye,inv,assert_shape
   implicit none
   private
@@ -2101,7 +2101,7 @@ contains
   end subroutine dyson_kb_gf_d7__
 
 
-END MODULE NEQ_GF_DYSON
+END MODULE KB_GF_DYSON
 
 
 

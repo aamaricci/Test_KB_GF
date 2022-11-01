@@ -1,10 +1,9 @@
-MODULE NEQ_GF_VIE
-  USE NEQ_CONTOUR
-  USE NEQ_INPUT_VARS
-  USE NEQ_GF_COMMON
-  USE NEQ_GF_BASIS
-  USE SF_CONSTANTS, only: one,xi,zero,pi
-  USE SF_LINALG,    only: zeye,inv
+MODULE KB_GF_VIE
+  USE KB_VARS_GLOBAL
+  USE KB_CONTOUR
+  USE KB_GF_AUX
+  USE KB_GF_COMMON
+  USE SCIFOR, only: one,xi,zero,pi,zeye,inv
   implicit none
   private
 
@@ -1102,7 +1101,7 @@ contains
 
 
 
-  
+
   !##################################################################
   ! The procedures are divided in two sets:
   ! Even Ranks: 0,2,4,6
@@ -1257,7 +1256,7 @@ contains
 
 
 
-END MODULE NEQ_GF_VIE
+END MODULE KB_GF_VIE
 
 
 
