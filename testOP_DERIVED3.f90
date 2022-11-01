@@ -3,24 +3,19 @@ program test
   USE KB_LIB
 
   implicit none
-  integer                                           :: i,j,ik,itime,Lk,Nx,Nso
-  logical                                           :: converged
-  real(8)                                           :: ts,time
-  character(len=16)                                 :: finput
+  integer                                     :: i,j,ik,itime,Lk,Nx,Nso
+  logical                                     :: converged
+  real(8)                                     :: ts,time
+  character(len=16)                           :: finput
 
-  type(kb_gf) :: K,G,F
-  type(kb_gf),allocatable,dimension(:) :: Kk,Gk,Fk
-  type(kb_gf),allocatable,dimension(:,:,:) :: Gkk
-  !RESULTS:
-  complex(8),dimension(:,:,:),allocatable           :: Hk  ![Nso,Nso,Lk]
-  complex(8),dimension(:,:,:,:),allocatable         :: Hkt !
-  real(8),dimension(:,:,:,:,:),allocatable          :: Vk
-  real(8),dimension(:),allocatable                  :: Wt
+  type(kb_gf)                                 :: K,G,F
+  type(kb_gf),allocatable,dimension(:)        :: Kk,Gk,Fk
+  type(kb_gf),allocatable,dimension(:,:,:)    :: Gkk
 
-  integer :: io,jo,ko
-  real(8) :: x(2)
-  logical :: bool
-  integer :: N,L,Lf
+  integer                                     :: io,jo,ko
+  real(8)                                     :: x(2)
+  logical                                     :: bool
+  integer                                     :: N,L,Lf
 
   !READ THE INPUT FILE (in vars_global):
   call parse_cmd_variable(finput,"FINPUT",default='input.conf')

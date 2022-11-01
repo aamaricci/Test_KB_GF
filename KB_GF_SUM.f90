@@ -1,7 +1,7 @@
 MODULE KB_GF_SUM
   USE KB_VARS_GLOBAL
   USE KB_CONTOUR
-  USE KB_GF_AUX
+  USE KB_AUX
   USE KB_GF_COMMON
   USE SF_CONSTANTS, only: one,xi,zero,pi
   implicit none

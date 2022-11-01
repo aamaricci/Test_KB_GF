@@ -40,7 +40,7 @@ endif
 
 OBJS =  KB_VARS_GLOBAL.o \
 	KB_CONTOUR.o \
-	KB_GF_AUX.o \
+	KB_AUX.o \
 	KB_GF_COMMON.o \
 	KB_GF_SUM.o \
 	KB_GF_CONVOLUTE.o \
@@ -51,8 +51,14 @@ OBJS =  KB_VARS_GLOBAL.o \
 	KB_LIB.o
 
 
-all: all version compile
-debug: debug version compile
+all: all libkbgf.a compile
+
+lib: lib libkbgf.a
+
+debug: debug libkbgf.a compile
+
+
+lib: FPPFLAG+=-D_
 
 all: FPPFLAG+=-D_
 
@@ -60,7 +66,13 @@ debug: FFLAG=$(DFLAG)
 debug: FPPFLAG+=-D_
 
 
-compile: version $(OBJS)
+libkbgf.a:$(OBJS)
+	ar cvq $@ `ls *.o | sort | uniq`  
+	ranlib $@
+	@echo 'LIBRARY IS DONE.........'
+	@echo ''
+
+compile: $(OBJS)
 	@echo " ..................... compile ........................... "
 	$(FC) $(FFLAG) $(INCARGS) $(OBJS) $(EXE).f90 -o $(DIREXE)/$(EXE)$(BRANCH) $(LIBARGS)
 	@echo " ...................... done .............................. "
@@ -73,17 +85,10 @@ compile: version $(OBJS)
 	$(FC) $(FFLAG) $(SFINC) -c $<
 
 
-completion:
-	src_completion.sh $(DIR)/$(EXE).f90
-	@echo "run: . .bash_completion.d/$(EXE) to add completion for $(EXE) in this shell"
-
 clean: 
 	@echo "Cleaning:"
-	@rm -f *.mod *.o *~ revision.inc
+	@rm -fv *.mod *.o *~ *.a
 
-version:
-	@echo $(VER)
-# DO NOT DELETE
 
 
 

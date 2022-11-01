@@ -1,2 +1,6 @@
 test
 wer_nes.pdf
+*.o
+libkb.a
+*.mod
+NEQ_IPT

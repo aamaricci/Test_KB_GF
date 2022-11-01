@@ -1,4 +1,4 @@
-MODULE KB_GF_AUX
+MODULE KB_AUX
   USE KB_VARS_GLOBAL
   USE KB_CONTOUR
   USE SCIFOR, only: one,xi,zero,pi,fft,ifft
@@ -23,9 +23,7 @@ MODULE KB_GF_AUX
   public :: fft_iw2tau
   public :: fft_tau2iw
   public :: fft_extract_gtau
-  !Aux functions
-  public :: reshape_nso2nn
-  public :: reshape_nn2nso
+
 
 
 
@@ -240,47 +238,6 @@ contains
     enddo
   end subroutine fft_extract_gtau
 
-
-
-  function reshape_nso2nn(Hso,Nspin,Norb,L) result(Hnn)
-    integer                                       :: Nspin,Norb,L
-    complex(8),dimension(Nspin*Norb,Nspin*Norb,L) :: Hso
-    complex(8),dimension(Nspin,Nspin,Norb,Norb,L) :: Hnn
-    integer                                       :: iorb,ispin,is
-    integer                                       :: jorb,jspin,js
-    Hnn=zero
-    do ispin=1,Nspin
-       do jspin=1,Nspin
-          do iorb=1,Norb
-             do jorb=1,Norb
-                is = iorb + (ispin-1)*Norb  !spin-orbit stride
-                js = jorb + (jspin-1)*Norb  !spin-orbit stride
-                Hnn(ispin,jspin,iorb,jorb,:) = Hso(is,js,:)
-             enddo
-          enddo
-       enddo
-    enddo
-  end function reshape_nso2nn
-
-  function reshape_nn2nso(Hnn,Nspin,Norb,L) result(Hso)
-    integer                                       :: Nspin,Norb,L
-    complex(8),dimension(Nspin,Nspin,Norb,Norb,L) :: Hnn
-    complex(8),dimension(Nspin*Norb,Nspin*Norb,L) :: Hso
-    integer                                       :: iorb,ispin,is
-    integer                                       :: jorb,jspin,js
-    Hso=zero
-    do ispin=1,Nspin
-       do jspin=1,Nspin
-          do iorb=1,Norb
-             do jorb=1,Norb
-                is = iorb + (ispin-1)*Norb  !spin-orbit stride
-                js = jorb + (jspin-1)*Norb  !spin-orbit stride
-                Hso(is,js,:) = Hnn(ispin,jspin,iorb,jorb,:)
-             enddo
-          enddo
-       enddo
-    enddo
-  end function reshape_nn2nso
 
 
 
@@ -889,7 +846,7 @@ contains
 
 
 
-END MODULE KB_GF_AUX
+END MODULE KB_AUX
 
 
 

@@ -1,7 +1,7 @@
 MODULE KB_GF_VIE
   USE KB_VARS_GLOBAL
   USE KB_CONTOUR
-  USE KB_GF_AUX
+  USE KB_AUX
   USE KB_GF_COMMON
   USE SCIFOR, only: one,xi,zero,pi,zeye,inv
   implicit none
