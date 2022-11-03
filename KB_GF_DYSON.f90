@@ -3,6 +3,7 @@ MODULE KB_GF_DYSON
   USE KB_CONTOUR
   USE KB_AUX
   USE KB_GF_COMMON
+  USE KB_GF_FREE
   USE SCIFOR, only: one,xi,zero,pi,zeye,inv,assert_shape
   implicit none
   private
@@ -29,6 +30,8 @@ MODULE KB_GF_DYSON
 
   public :: dyson_kb_gf
 
+
+  logical :: imsg=.true.
 
 contains
 
@@ -66,6 +69,13 @@ contains
     dtau= cc_params%dtau
     !
     call assert_shape(Hk,[cc_params%Ntime],"dyson_kb_gf_rank0","Hk")
+    if(K%is_zero())then
+       if(imsg)write(*,"(A)") " MSG dyson_kb_gf: K=0 using free_kb_gf"
+       imsg=.false.
+       call free_kb_gf(Hk,Gk,dGk,dGk_new)
+       return
+    endif
+    !
     allocate(KxGk(0:max(N,L)))
     !
     !Treat here the t=0,0 case:
@@ -253,6 +263,12 @@ contains
     dtau= cc_params%dtau
     Nso = size(Hk,1)            !shape was asserted before entering
     !
+    if(all(K%is_zero()))then
+       if(imsg)write(*,"(A)") " MSG dyson_kb_gf: K=0 using free_kb_gf"
+       imsg=.false.
+       call free_kb_gf(Hk,Gk,dGk,dGk_new)
+       return
+    endif
     !
     allocate(KxGk(0:max(N,L)))
     !
@@ -643,12 +659,19 @@ contains
     Niw = cc_params%Niw
     dt  = cc_params%dt
     dtau= cc_params%dtau
-    Nspin = size(Gk,1) ; Norb = size(Gk,3) ; Nso=Nspin*Norb
-    call assert_shape(Hk,[Nso,Nso,cc_params%Ntime],"dyson_kb_gf_rank0","Hk")
-    call assert_shape_kb_gf(K,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","K")
-    call assert_shape_kb_gf(Gk,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","Gk")
-    call assert_shape_kb_gf(dGk,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk")
-    call assert_shape_kb_gf(dGk_new,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk_new")
+    Nspin = size(Gk,1) ; Norb = size(Gk,3) ; Nso=Nspin*Norb            !shape was asserted before entering
+    ! call assert_shape(Hk,[Nso,Nso,cc_params%Ntime],"dyson_kb_gf_rank0","Hk")
+    ! call assert_shape_kb_gf(K,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","K")
+    ! call assert_shape_kb_gf(Gk,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","Gk")
+    ! call assert_shape_kb_gf(dGk,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk")
+    ! call assert_shape_kb_gf(dGk_new,[Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk_new")
+    !
+    if(all(K%is_zero()))then
+       if(imsg)write(*,"(A)") " MSG dyson_kb_gf: K=0 using free_kb_gf"
+       imsg=.false.
+       call free_kb_gf(Hk,Gk,dGk,dGk_new)
+       return
+    endif
     !
     allocate(KxGk(0:max(N,L)))
     !
@@ -1104,9 +1127,6 @@ contains
 
 
 
-
-
-
   subroutine dyson_kb_gf_rank6(Hk,K,Gk,dGk,dGk_new)
     complex(8),dimension(:,:,:)           :: Hk              ![Nlso][Nlso][Nt]
     type(kb_gf),intent(in)                :: K(:,:,:,:,:,:)  ![Nlat][Nlat][Nspin][Nspin][Norb][Norb]
@@ -1128,11 +1148,18 @@ contains
     dt  = cc_params%dt
     dtau= cc_params%dtau
     Nlat = size(Gk,1) ; Nspin = size(Gk,3) ; Norb = size(Gk,5) ; Nso=Nlat*Nspin*Norb
-    call assert_shape(Hk,[Nlso,Nlso,cc_params%Ntime],"dyson_kb_gf_rank0","Hk")
-    call assert_shape_kb_gf(K,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","K")
-    call assert_shape_kb_gf(Gk,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","Gk")
-    call assert_shape_kb_gf(dGk,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk")
-    call assert_shape_kb_gf(dGk_new,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk_new")
+    ! call assert_shape(Hk,[Nlso,Nlso,cc_params%Ntime],"dyson_kb_gf_rank0","Hk")
+    ! call assert_shape_kb_gf(K,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","K")
+    ! call assert_shape_kb_gf(Gk,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","Gk")
+    ! call assert_shape_kb_gf(dGk,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk")
+    ! call assert_shape_kb_gf(dGk_new,[Nlat,Nlat,Nspin,Nspin,Norb,Norb],"dyson_kb_gf_Rank4","dGk_new")
+    !
+    if(all(K%is_zero()))then
+       if(imsg)write(*,"(A)") " MSG dyson_kb_gf: K=0 using free_kb_gf"
+       imsg=.false.
+       call free_kb_gf(Hk,Gk,dGk,dGk_new)
+       return
+    endif
     !
     allocate(KxGk(0:max(N,L)))
     !
@@ -1657,8 +1684,6 @@ contains
   ! [THE OTHER ORDERING (i1,i2,i3,j1,j2,j3) --> (i,j) WOULD REQUIRE TO HAVE
   !  FUNCTIONS OF THE TYPE F(NLAT,NSPIN,NORB,NLAT,NSPIN,NORB)]
   !##################################################################
-
-
 
   subroutine dyson_kb_gf_d1(H,K,G,dG,dG_new)
     complex(8),dimension(:,:)  :: H       ![Nk][Nt]

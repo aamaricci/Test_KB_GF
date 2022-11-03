@@ -107,6 +107,7 @@ program test
   G = dcmplx(1d0,0d0)
   F = dcmplx(1d0,0d0)
   K = pi*G + (-pi)*F
+  
   print*,"G%less(1,1:2)",G%less(1,1:2)
   print*,"F%less(1,1:2)",F%less(1,1:2)
   print*,"[pi*G+ (-pi*F)]%less(1,1:2)",K%less(1,1:2)
@@ -175,11 +176,34 @@ program test
   print*,""
 
 
+
+  print*,"Test do concurrent and sum"
   x = 0d0
   do concurrent(io=1:2,ik=1:10)
      x(io) = x(io) + 0.1d0
      print*,io,x(io)
   enddo
+
+
+  G=zero
+  print*,"G=0 -> G%is_zero:",G%is_zero()
+  G = one
+  print*,"G=1 -> G%is_zero:",G%is_zero()
+
+  Gk = zero
+  print*,"Gk=0  ->  Gk%is_zero:",Gk%is_zero()
+  print*,"Gk=0,any(Gk%is_zero):",any(Gk%is_zero())
+  print*,"Gk=0,all(Gk%is_zero):",all(Gk%is_zero())
+  Gk(1::4) = one
+  print*,"G(1::4)=1   ->    G%is_zero:",Gk%is_zero()
+  print*,"Gk(1::4)=0, any(Gk%is_zero):",any(Gk%is_zero())
+  print*,"Gk(1::4)=0, all(Gk%is_zero):",all(Gk%is_zero())
+  Gk = one
+
+  print*,"Gk=1  ->    Gk%is_zero:",Gk%is_zero()
+  print*,"Gk=1,  any(Gk%is_zero):",any(Gk%is_zero())
+  print*,"Gk=1,  all(Gk%is_zero):",all(Gk%is_zero())
+
   stop
 
 

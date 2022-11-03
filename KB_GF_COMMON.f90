@@ -3,7 +3,6 @@ MODULE KB_GF_COMMON
   USE KB_VARS_GLOBAL
   USE KB_AUX
   USE SCIFOR, only: one,xi,zero,pi,zeye,inv,assert_shape
-  ! USE SF_IOTOOLS
   implicit none
   private
 
@@ -22,7 +21,8 @@ MODULE KB_GF_COMMON
      procedure :: extrapolate => extrapolate_kb_gf   !extrapolate
      procedure :: free        => free_kb_gf          !destructor
      procedure :: del         => del_kb_gf           !set to zero at the boundary
-     procedure :: check       => check_kb_gf         !set to zero at the boundary
+     procedure :: check       => check_kb_gf         !check allocation (return bool)
+     procedure :: is_zero     => is_zero_kb_gf       !check if zero (return bool)
      final :: deallocate_kb_gf                       !destructor final
   end type kb_gf
 
@@ -38,7 +38,8 @@ MODULE KB_GF_COMMON
      procedure :: init        => init_kb_dgf_params   !constructor
      procedure :: free        => free_kb_dgf          !destructor
      procedure :: del         => del_kb_dgf           !set to zero at the boundary
-     procedure :: check       => check_kb_dgf         !set to zero at the boundary
+     procedure :: check       => check_kb_dgf         !check allocation (return bool)
+     procedure :: is_zero     => is_zero_kb_dgf       !check if zero (return bool)
      final :: deallocate_kb_dgf                       !destructor final     
   end type kb_dgf
 
@@ -656,10 +657,38 @@ contains
   !##################################################################
 
 
+  elemental function is_zero_kb_gf(G) result(bool)
+    class(kb_gf),intent(in) :: G
+    logical                 :: bool
+    logical                 :: b(4)
+    !
+    b(1) = all(G%less==zero) !T: G==0, F: G/=0
+    b(2) = all(G%ret==zero)
+    b(3) = all(G%lmix==zero)
+    b(4) = all(G%mats==zero)
+    bool = b(1).AND.b(2).AND.b(3).AND.b(4)
+  end function is_zero_kb_gf
+
+
+
+  elemental function is_zero_kb_dgf(G) result(bool)
+    class(kb_dgf),intent(in) :: G
+    logical                  :: bool
+    logical                  :: b(3)
+    !
+    b(1) = all(G%less==zero)
+    b(2) =  all(G%ret==zero)
+    b(3) = all(G%lmix==zero)
+    bool = b(1).AND.b(2).AND.b(3)
+  end function is_zero_kb_dgf
 
 
 
 
+  !##################################################################
+  !##################################################################
+  !##################################################################
+  !##################################################################
 
   !EXTRAPOLATE
   elemental subroutine extrapolate_kb_gf(G)

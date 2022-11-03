@@ -42,11 +42,12 @@ OBJS =  KB_VARS_GLOBAL.o \
 	KB_CONTOUR.o \
 	KB_AUX.o \
 	KB_GF_COMMON.o \
+	KB_GF_IO.o \
 	KB_GF_SUM.o \
 	KB_GF_CONVOLUTE.o \
 	KB_GF_VIE.o \
-	KB_GF_DYSON.o \
 	KB_GF_FREE.o \
+	KB_GF_DYSON.o \
 	KB_GF_MAIN.o \
 	KB_LIB.o
 
